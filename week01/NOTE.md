@@ -10,7 +10,7 @@
 
 前端技能模型：
 
-![image-20200407204242849](/Users/dingwenwan/Library/Application Support/typora-user-images/image-20200407204242849.png)
+![frontendKnowledge](./images/frontendKnowledge.png)
 
 
 
