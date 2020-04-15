@@ -1,4 +1,4 @@
-丁文婉 `<1067061570@qq.com>`, v1.0.0,  2020.4.15
+丁文婉 `<1067061570@qq.com>`, v1.0.1,  2020.4.15
 
 [TOC]
 
@@ -54,21 +54,23 @@
 
 ### 4.08 直播课笔记 ——构建前端知识体系
 
+具体见脑图：前端知识框架.xmind（后期会不断完善）
+
 参考标准网站:
 
-w3c: https://www.w3.org/
+ https://www.w3.org/
 
-Whatwg：https://whatwg.org/
+https://whatwg.org/
 
 http://w3school.com/
 
-谷歌学术：https://scholar.google.com/
+https://scholar.google.com/
 
-Mozilla：https://developer.mozilla.org/
+https://developer.mozilla.org/
 
-windows：https://docs.microsoft.com/
+https://docs.microsoft.com/
 
-IOS：https://developer.apple.com/
+https://developer.apple.com/
 
 
 
