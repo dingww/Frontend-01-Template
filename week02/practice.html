@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>week02</title>
+</head>
+<body>
+    
+</body>
+</html>
+<script>
+    // practice1: Match All Number
+    function testNumber(num){
+        // let reg2 = /^[-+]?(0(b|B)[0-1]+$|0(b|B)[0-1]+\.[0-1]+$)/
+        // let reg8 = /^[-+]?(0[0-7]+$|^0[0-7]+\.[0-7]+$)/
+        // let reg10 = /^[-+]?([1-9]\d+$|\d$|(\d|[1-9]\d+)\.\d+$|([1-9]|(\d?\.\d+))(e|E)\d+$)/
+        // let reg16 = /^[-+]?(0(x|X)[0-9A-Fa-f]+$|^0(x|X)[0-9A-Fa-f]+\.[0-9A-Fa-f]+$)/
+        var numberReg = /^[-+]?(([1-9]\d+$|\d$|(\d|[1-9]\d+)\.\d+$|([1-9]|(\d?\.\d+))(e|E)\d+$)|(0(b|B)[0-1]+$|0(b|B)[0-1]+\.[0-1]+$)|(0[0-7]+$|^0[0-7]+\.[0-7]+$)|(0(x|X)[0-9A-Fa-f]+$|^0(x|X)[0-9A-Fa-f]+\.[0-9A-Fa-f]+$))/g;
+        return numberReg.test(String(num));
+    }
+
+    // practice2: 
+    function enCoding(str){
+        var strArr = str.split('');
+        var codeArr = [];
+        strArr.map((item, index) => {
+            var code = item.charCodeAt().toString(16);
+            var codeLen = code.length;
+            var templet = '0000';
+            codeArr.push(code.length > 4 ? `\\u{${code}}`: `\\u${templet.slice(codeLen)}${code}`);
+        });
+        return codeArr.join('')
+    }
+
+    // practice3: Match All String
+    function matchString(str){
+        let strReg = /^(\")/
+    }
+    
+
+</script>

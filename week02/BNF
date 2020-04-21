@@ -1,0 +1,11 @@
+<Number> = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+
+<DecimalNumber> = <Number> | (("1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9") <Number>* )
+
+<MultiExpression> = <DecimalNumber> ｜ <MultiExpression> "*" <DecimalNumber> 
+
+<AddExpression> = <MultiExpression> ｜ <MultiExpression> "+" <AddExpression> | <MultiExpression> "-" <AddExpression>
+
+<LogicExpression> = <AddExpression> | <AddExpression> "||" <LogicExpression> | <AddExpression> "&&" <LogicExpression>
+
+<PrimaryExpression> = <DecimalNumber> | "(" <LogicExpression> ")"
