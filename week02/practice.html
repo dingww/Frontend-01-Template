@@ -10,33 +10,50 @@
 </body>
 </html>
 <script>
-    // practice1: Match All Number
+   
+    // 1、写一个正则表达式 匹配所有 Number 直接量
     function testNumber(num){
-        // let reg2 = /^[-+]?(0(b|B)[0-1]+$|0(b|B)[0-1]+\.[0-1]+$)/
-        // let reg8 = /^[-+]?(0[0-7]+$|^0[0-7]+\.[0-7]+$)/
-        // let reg10 = /^[-+]?([1-9]\d+$|\d$|(\d|[1-9]\d+)\.\d+$|([1-9]|(\d?\.\d+))(e|E)\d+$)/
-        // let reg16 = /^[-+]?(0(x|X)[0-9A-Fa-f]+$|^0(x|X)[0-9A-Fa-f]+\.[0-9A-Fa-f]+$)/
+        let reg2 = /^[-+]?(0(b|B)[0-1]+$|0(b|B)[0-1]+\.[0-1]+$)/
+        let reg8 = /^[-+]?(0[0-7]+$|^0[0-7]+\.[0-7]+$)/
+        let reg10 = /^[-+]?([1-9]\d+$|\d$|(\d|[1-9]\d+)\.\d+$|([1-9]|(\d?\.\d+))(e|E)\d+$)/
+        let reg16 = /^[-+]?(0(x|X)[0-9A-Fa-f]+$|^0(x|X)[0-9A-Fa-f]+\.[0-9A-Fa-f]+$)/
         var numberReg = /^[-+]?(([1-9]\d+$|\d$|(\d|[1-9]\d+)\.\d+$|([1-9]|(\d?\.\d+))(e|E)\d+$)|(0(b|B)[0-1]+$|0(b|B)[0-1]+\.[0-1]+$)|(0[0-7]+$|^0[0-7]+\.[0-7]+$)|(0(x|X)[0-9A-Fa-f]+$|^0(x|X)[0-9A-Fa-f]+\.[0-9A-Fa-f]+$))/g;
         return numberReg.test(String(num));
     }
 
-    // practice2: 
-    function enCoding(str){
+    // 2、写一个 UTF-8 Encoding 的函数
+
+    function strToUniCoding(str){
         var strArr = str.split('');
         var codeArr = [];
         strArr.map((item, index) => {
             var code = item.codePointAt().toString(16);
             var codeLen = code.length;
             var templet = '0000';
-            codeArr.push(code.length > 4 ? `\\u{${code}}`: `\\u${templet.slice(codeLen)}${code}`);
+            codeArr.push(code.length > 4 ? `\\u${code}`: `\\u${templet.slice(codeLen)}${code}`);
         });
-        return codeArr.join('')
+        let utf8Arr = []
+        codeArr.map((item, index) => {
+            utf8Arr.push(uniCodeToUTF8(item))
+        })
+        return utf8Arr.join('0x')
     }
 
-    // practice3: Match All String
-    function matchString(str){
+    function uniCodeToUTF8(uniCode) {
+        let uniCodeNum = Number(`0x${uniCode.split('\\u')[1]}`) ;
+        if(uniCodeNum > 0 && uniCodeNum <= 0x007F){          
+            return `0x${uniCodeuniCodeNum.toString(16)}`;
+        }else if(uniCodeNum > 0x007F && uniCodeNum <= 0x07FF){
+            let binary = uniCodeNum.toString(2)
+        }
+        console.log('uniCodeNum', uniCodeNum, uniCode)
+    }
 
-        let strReg = /^(\")/
+    // 3、写一个正则表达式，匹配所有的字符串直接量，单引号和双引号
+    function matchString(str){
+        var uniCodeStr = strToUniCoding(str);
+        let strReg = /^(\\u[0-9A-Fa-f]{4})|(\\u\{1[0-9A-Fa-f]{4})+$/
+        return uniCodeStr.test(strReg);
     }
     
 
