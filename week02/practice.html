@@ -25,7 +25,7 @@
         var strArr = str.split('');
         var codeArr = [];
         strArr.map((item, index) => {
-            var code = item.charCodeAt().toString(16);
+            var code = item.codePointAt().toString(16);
             var codeLen = code.length;
             var templet = '0000';
             codeArr.push(code.length > 4 ? `\\u{${code}}`: `\\u${templet.slice(codeLen)}${code}`);
@@ -35,6 +35,7 @@
 
     // practice3: Match All String
     function matchString(str){
+
         let strReg = /^(\")/
     }
     
