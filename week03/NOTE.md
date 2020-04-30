@@ -188,3 +188,127 @@ Tips:
 
 ## 课堂作业
 
+- 对象分类
+
+  - 宿主对象
+
+    - 由javascript宿主环境提供，它们的运行完全由宿主环境决定，这些对象的属性，一部分来自js语言，一部分来之宿主环境
+    - 分类
+      - 固有的
+        - 如：window、navigator
+      - 用户可创建的
+        - 如：用document.createElement可以创建一些 DOM 对象
+
+  - 内置对象
+
+    - 固有对象
+
+      - 由标准规定，随着js运行时创建而自动创建的对象实例
+
+      - 固有对象在任何js代码执行前就已经被创建出来
+
+      - 所有的固有对象
+
+        - ```
+          // 查找代码
+          var set = new Set();
+          var objects = [
+              eval,
+              isFinite,
+              isNaN,
+              parseFloat,
+              parseInt,
+              decodeURI,
+              decodeURIComponent,
+              encodeURI,
+              encodeURIComponent,
+              Array,
+              Date,
+              RegExp,
+              Promise,
+              Proxy,
+              Map,
+              WeakMap,
+              Set,
+              WeakSet,
+              Function,
+              Boolean,
+              String,
+              Number,
+              Symbol,
+              Object,
+              Error,
+              EvalError,
+              RangeError,
+              ReferenceError,
+              SyntaxError,
+              TypeError,
+              URIError,
+              ArrayBuffer,
+              SharedArrayBuffer,
+              DataView,
+              Float32Array,
+              Float64Array,
+              Int8Array,
+              Int16Array,
+              Int32Array,
+              Uint8Array,
+              Uint16Array,
+              Uint32Array,
+              Uint8ClampedArray,
+              Atomics,
+              JSON,
+              Math,
+              Reflect];
+          objects.forEach(o => set.add(o));
+          
+          for(var i = 0; i < objects.length; i++) {
+              var o = objects[i]
+              for(var p of Object.getOwnPropertyNames(o)) {
+                  var d = Object.getOwnPropertyDescriptor(o, p)
+                  if( (d.value !== null && typeof d.value === "object") || (typeof d.value === "function"))
+                      if(!set.has(d.value))
+                          set.add(d.value), objects.push(d.value);
+                  if( d.get )
+                      if(!set.has(d.get))
+                          set.add(d.get), objects.push(d.get);
+                  if( d.set )
+                      if(!set.has(d.set))
+                          set.add(d.set), objects.push(d.set);
+              }
+          }
+    ```
+          
+      - 结果：共989个固有对象![image-20200430115609494](/Users/dingwenwan/Library/Application Support/typora-user-images/image-20200430115609494.png)
+    
+  - 原生对象
+    
+      - js中，能够通过语言本身的构造器创建的对象
+      - js构造器分类
+        - ![image-20200430111231807](/Users/dingwenwan/Library/Application Support/typora-user-images/image-20200430111231807.png)
+      - 特性
+        - 无法用纯 JavaScript 代码实现的，它们也无法用 class/extend 语法来继承
+        - 多数使用了私有字段
+        - 这些字段的使用，使得原型继承方法无法正常工作
+    
+    - 普通对象
+
+- Tips
+  - 任何对象只要有[[call]]私有字段，它就是一个函数对象
+  - 任何对象只要有[[construct]]私有字段，它就是一个构造器对象
+  - 在 ES6 之后 => 语法创建的函数仅仅是函数，它们无法被当作构造器使用
+
+- js中无法模拟的对象
+
+  - Bound Function对象：更原来的函数相关联，无法预知原来的函数是什么；
+  - Array对象：[[length]]属性根据最大下标自动发生变化；
+  - String对象：为了支持下标运算，String 的正整数属性访问会去字符串里查找；
+  - Argument对象：arguments 的非负整数型下标属性跟对应的变量联动；
+  - Integer-Indexed对象：跟内存块相关联，下标运算比较特殊；
+  - Module Namespace对象：特殊的地方非常多，跟一般对象完全不一样，尽量只用于 import；
+  - Immutable Prototype对象作为所有正常对象的默认原型，不能再给它设置原型了。
+
+  
+
+
+
