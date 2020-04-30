@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <input/>
+</body>
+</html>
+
+<script>
+ 
+// 双向绑定
+window.onload=function(){
+    var data={
+        value: ''
+    }
+    var Input = document.querySelector('input');
+
+    Object.defineProperty(data, 'value', {
+        get: function(){
+            return Input.value;
+        },
+        set: function(value){
+            Input.value = value;
+            console.log('value', data.value)
+        }
+    });
+
+    data.value="ddd"
+    Input.onchange = function(e){
+        data.value = e.target.value;
+    }
+    
+
+}
+</script>

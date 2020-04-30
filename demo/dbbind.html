@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用Object.defineProperty()方法实现双向绑定</title>
+</head>
+<body>
+    <h1 id="title"></h1>
+    <input type="text" id="input" onkeyup="onChange(event)"/>
+    <button id="btn" type="button" onclick="onAdd()">加</button>
+</body>
+</html>
+<script>
+    let vm = {
+        data: 0,
+    };
+
+    function renderTitle(newData){
+        let title = document.getElementById('title');
+        title.innerHTML = newData;
+    }
+
+    function renderInput(newData){
+        let input = document.getElementById('input');
+        input.value = newData;
+    }
+
+    let dev = new Dep();
+    dev.add(renderTitle);
+    dev.add(renderInput);
+    
+     // 观察者模式的核心代码
+    function Dep(){
+        this.list = [];
+        this.add = function(watcher){
+            this.list.push(watcher);
+        }
+        this.notify = function(newData){
+            this.list.forEach(function(watcher){
+                watcher(newData);
+            })
+        }
+    }
+   
+    function watcher(data, key, value){
+        Object.defineProperty(data, key, {
+            enumerable: true,
+            configurable: true,
+            get: function(){
+                console.log('Get');
+                return value;
+            },
+            set: function(newData){
+                if(value !== newData){
+                    value = newData;
+                    console.log('update', newData);
+                    dev.notify(newData);
+                }
+            }
+        })
+    }
+
+    function onAdd(){
+        vm.data = vm.data + 1;
+    }
+
+    function onChange(e){
+        let value = e.target.value;
+        if(!Number.isNaN(value)){
+            vm.data = Number(value);
+        }
+    }
+
+    function init(vm){
+        Object.keys(vm).forEach(function(key){
+            watcher(vm, key, vm[key])
+        })
+    }
+
+    init(vm);
+    dev.notify(vm.data);
+    
+</script>
