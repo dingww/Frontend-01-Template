@@ -7,10 +7,10 @@
 ## 事件循环
 
 ### 宏任务：
-- 由浏览器控制执行的api
+- 由宿主环境提供的api
 - 如：script、ui交互、setTimeout、setInterval都是宏任务
 ### 微任务：
-- 由js引擎控制执行的api
+- 由js引擎提供的api
 
 ### Tips：
 - js所有的代码都可以看作微任务，只是哪些微任务聚合成宏任务
@@ -19,7 +19,7 @@
 ```
  async function async1() {
       console.log('async1 start'); // 同步代码
-      await async2();
+      await async2(); // await 后面的语句，效果与then回调类似，会插入到微任务队列
       console.log('async1 end'); //第一个微任务
   }
   async function async2() {
