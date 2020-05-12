@@ -1,0 +1,173 @@
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Document</title>
+ </head>
+ <body>
+    <div id="container"></div>
+ </body>
+ </html>
+ <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g6-3.1.0/build/g6.js"></script>
+ <script>
+    // 所有Realm里面的对象
+    let set = new Set();
+    let globalObjList = ['Infinity', 'NaN', 'eval', 'parseFloat', 'parseInt', 'decodeURI', 
+    'decodeURIComponent', 'encodeURI', 'encodeURIComponent', 'Array', 'Date', 'RegExp', 'Promise',
+    'Proxy','Map', 'WeakMap', 'Set', 'WeakSet', 'Function', 'Boolean', 'String', 'Number', 'Symbol', 
+    'Object', 'Error', 'EvalError', 'RangeError', 'ReferenceError', 'SyntaxError', 'TypeError', 'URIError',
+    'ArrayBuffer', 'SharedArrayBuffer', 'DataView', 'Float32Array', 'Float64Array', 'Int8Array', 'Int16Array',
+    'Int32Array', 'Uint8Array', 'Uint16Array', 'Uint32Array', 'Uint8ClampedArray', 'Atomics', 
+    'JSON', 'Math', 'Reflect'
+    ];
+    let queue = [];
+    for(let p of globalObjList){
+        queue.push({
+            path: [p],
+            object: this[p]
+        })
+    }
+    let current;
+    let data = {
+        id: 'global',
+        isRoot: true,
+        style: {
+            fill: 'red',
+        },
+        children: []
+    };
+    let i = 0 ;
+    while(queue.length > 0){
+        current = queue.shift();
+        if(set.has(current.object)){
+            continue;
+        } // 避免重复
+        set.add(current);
+        data.children.push({
+            id: current.path[0], 
+            children: []
+        });
+        let j = 0;
+        for(let p of Object.getOwnPropertyNames(current.object)){
+            let property = Object.getOwnPropertyDescriptor(current.object, p);
+            if(property.hasOwnProperty('value') && (property.value != null && typeof property.value === 'object' || typeof property.value === 'function') &&  property.value instanceof Object){
+                data.children[i].children.push({
+                    id: p,
+                    children: []
+                });
+                for(let q of Object.getOwnPropertyNames(property.value)){
+                    if(q !=='name' && q !=='length'){
+                        data.children[i].children[j].children.push({
+                            id: q,
+                            children: []
+                        });
+                    }
+                }
+                j++;
+            }
+            if(property.hasOwnProperty('get') && typeof property.get === 'function'){
+                data.children[i].children.push({
+                    id: p, 
+                    children: []
+                });
+                j++;
+            }
+            if(property.hasOwnProperty('set') && typeof property.set === 'function'){
+                data.children[i].children.push({
+                    id: p, 
+                    children: []
+                });
+                j++;
+            }
+        }
+        i++;
+    }
+    // console.log('data', data)
+
+    const width = document.getElementById('container').scrollWidth;
+    const height = document.getElementById('container').scrollHeight || 1080;
+    const graph = new G6.TreeGraph({
+        container: 'container',
+        width,
+        height,
+        linkCenter: true,
+        modes: {
+            default: [
+            {
+                type: 'collapse-expand',
+                onChange: function onChange(item, collapsed) {
+                const data = item.get('model').data;
+                data.collapsed = collapsed;
+                return true;
+                },
+            },
+            'drag-canvas',
+            'zoom-canvas',
+            ],
+        },
+        defaultNode: {
+            size: 30,
+            style: {
+                fill: '#C6E5FF',
+                stroke: '#5B8FF9',
+            },
+        },
+        defaultEdge: {
+            style: {
+                stroke: '#A3B1BF',
+            },
+        },
+        layout: {
+            type: 'compactBox',
+            direction: 'LR',
+            getId: function getId(d) {
+                return d.id;
+            },
+            getHeight: function getHeight() {
+                return 16;
+            },
+            getWidth: function getWidth() {
+                return 16;
+            },
+            getVGap: function getVGap() {
+                return 10;
+            },
+            getHGap: function getHGap() {
+                return 100;
+            },
+        },
+    });
+
+    graph.node(function(node) {
+        return {
+            size: 16,
+            anchorPoints: [
+                [0, 0.5],
+                [1, 0.5],
+            ],
+            style: {
+                fill: '#C6E5FF',
+                stroke: '#5B8FF9',
+            },
+            label: node.id,
+            labelCfg: {
+                position: node.children && node.children.length > 0 ? 'left' : 'right',
+                offset: 5,
+            },
+        };
+    });
+    let n = 0;
+    graph.edge(function() {
+        n++;
+        return {
+            type: 'cubic-horizontal',
+            color: '#A3B1BF',
+            label: n,
+        };
+    });
+
+    graph.data(data);
+    graph.render();
+    graph.fitView();
+ </script>
