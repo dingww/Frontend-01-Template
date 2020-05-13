@@ -29,8 +29,8 @@ ${this.bodyText}
 `
     }
     send(connection){
-        const parser = new ResponseParser;
         return new Promise((resolve, reject) => {
+            const parser = new ResponseParser();
             if(connection){
                 connection.write(this.requestText())
             }else{
@@ -41,8 +41,7 @@ ${this.bodyText}
                     connection.write(this.requestText())
                 })
             }
-            connection.on('data', (data) => {
-                
+            connection.on('data', (data) => {          
                 parser.receive(data.toString());
                 if(parser.isFinished){
                     resolve(parser.response)
@@ -107,9 +106,11 @@ class ResponseParser{
             if(chara === '\r'){
                 // console.log('//////');
                 this.current = this.WAITING_STATUS_LINE_END;
-            }else if(chara === '\n'){
-                this.current = this.WAITING_HEADER_NAME;
-            }else{
+            }
+            // else if(chara === '\n'){
+            //     this.current = this.WAITING_HEADER_NAME;
+            // }
+            else{
                 this.statusLine +=chara
             }
         }else if(this.current === this.WAITING_STATUS_LINE_END){
@@ -173,14 +174,9 @@ class TrunkedBodyParser{
         this.current = this.WAITING_LENGTH;
     }
     receiveChara(chara){
-        // console.log(JSON.stringify(chara));
-        // console.log(this.current);
         if(this.current === this.WAITING_LENGTH){
-            // console.log(chara)
             if(chara === '\r'){
                 if(this.length === 0){
-                    // console.log(this.content);
-                    // console.log('//////');
                     this.isFinished = true;
                 }
                 this.current = this.WAITING_LENGTH_LINE_END;
@@ -207,7 +203,7 @@ class TrunkedBodyParser{
             }
         }else if(this.current === this.WAITING_NEW_LINE_END){
             // console.log(chara)
-            if(chara === '\r'){
+            if(chara === '\n'){
                 this.current = this.WAITING_LENGTH;
             }
         }
