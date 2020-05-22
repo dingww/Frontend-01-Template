@@ -16,7 +16,7 @@
 
 ## 进程
 
-![image-20200520230039785](/Users/dingwenwan/Library/Application Support/typora-user-images/image-20200520230039785.png)
+![image-20200522101007953](/Users/dingwenwan/Library/Application Support/typora-user-images/image-20200522101007953.png)
 
 
 - 步骤
@@ -62,7 +62,7 @@
 # 5月16日直播--CSS解析
 ## 进程
 
-![image-20200520230128627](/Users/dingwenwan/Library/Application Support/typora-user-images/image-20200520230128627.png)
+![image-20200522101052057](/Users/dingwenwan/Library/Application Support/typora-user-images/image-20200522101052057.png)
 
 
 ## 解析css
