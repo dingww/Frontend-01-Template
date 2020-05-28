@@ -6,7 +6,7 @@ const server = http.createServer((req, res) => {
     res.setHeader('Content-Type', 'text/html');
     res.setHeader('X-Foo', 'bar');
     res.writeHead(200, {'Content-Type': 'text/html'});
-    res.end(`<html maaa=a >
+    res.end(`<html>
     <head>
         <style>
             #container{
@@ -16,11 +16,11 @@ const server = http.createServer((req, res) => {
             }
             #container #myid{
                 width:200px;
-                background-color: #ff5000;
+                background-color: rgb(225, 225, 100);
             }
             #container .c1{
                 width:300px;
-                background-color: #ff1111;
+                background-color: rgb(100, 225, 100);
             }   
         </style>
     </head>

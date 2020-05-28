@@ -3,13 +3,12 @@ function getStyle(element){
     if(!element.style){
         element.style = {};
     }
-    // console.log('------------/------------', JSON.stringify(element, null, '   '))
     
     for(let prop in element.computedStyle){
         // console.log('222', prop, element.computedStyle.value)
         element.style[prop] = element.computedStyle[prop].value;
         if(element.style[prop].toString().match(/px$/) || element.style[prop].toString().match(/[0-9\.]+$/)){
-            element.style[prop] = parseInt(element.computedStyle[prop].value)
+            element.style[prop] = parseInt(element.style[prop])
         }
     }
     return element.style;
@@ -88,7 +87,7 @@ module.exports.layout = function layout(element){
         crossStart = 'left';
         crossEnd = 'right';
     }else if(style.flexDirection === 'column-reverse'){
-        mainSign = 'height';
+        mainSize = 'height';
         mainStart = 'bottom';
         mainEnd = 'top';
         mainSign = -1;
@@ -110,12 +109,12 @@ module.exports.layout = function layout(element){
 
     let isAutoMainSize = false;
     if(!style[mainSign]){
-        style[mainSign] = 0;
+        elementStyle[mainSign] = 0;
         for(let i = 0; i < items.length; i++){
             let item = items[i];
             let itemStyle = getStyle(item);
             if(itemStyle[mainSize] !== null || itemStyle[mainSize] !== (void 0)){
-                style[mainSign] = style[mainSign] + itemStyle[mainSize]
+                elementStyle[mainSign] = elementStyle[mainSign] + itemStyle[mainSize]
             }
         }
         isAutoMainSize = true;
@@ -123,7 +122,7 @@ module.exports.layout = function layout(element){
     let flexLine = [];
     let flexLines = [flexLine];
 
-    let mainSpace = style[mainSize];
+    let mainSpace = elementStyle[mainSize];
     var crossSpace = 0;
     for(let i = 0; i < items.length; i++){
         let item = items[i];
@@ -193,7 +192,6 @@ module.exports.layout = function layout(element){
             for(let i = 0; i < items.length; i++){
                 let item = items[i];
                 let itemStyle = getStyle(item);
-
                 if((itemStyle.flex !== null) && (itemStyle.flex !== (void 0))){
                     flexTotal +=itemStyle.flex;
                     continue;
@@ -327,7 +325,7 @@ module.exports.layout = function layout(element){
         crossBase += crossSign * (lineCrossSize + step);
     })
     
-    // console.log('ddd--d',JSON.stringify(items, null, '   '))
+    // console.log('ddd--d', JSON.stringify(items, null, '   '))
     // console.log(JSON.stringify(elementStyle, null, '   '));
 
 }

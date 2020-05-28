@@ -230,7 +230,8 @@ void async function(){
     let response = await request.send();
     let dom = parser.parseHTML(response.body);
     let viewport = images(800, 600);
+    
     render(viewport, dom);
+    
     viewport.save('viewport.jpg');
-    // console.log(JSON.stringify(dom, null, '   '));
 }()

@@ -1,6 +1,6 @@
 const css = require('css');
 const EOF = Symbol('EOF');
-let {layout} = require('./layout');
+const {layout} = require('./layout');
 let currentToken = null;
 let currentAttribute = null;
 let currentTextNode = null;
@@ -393,5 +393,6 @@ module.exports.parseHTML = function parseHTML(html){
         state = state(c);
     }
     state = state(EOF);
+    // console.log('2222', JSON.stringify(stack[0], null, '   '));
     return stack[0];
 }
