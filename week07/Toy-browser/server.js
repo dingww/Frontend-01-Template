@@ -13,13 +13,14 @@ const server = http.createServer((req, res) => {
                 width: 500px;
                 height: 300px;
                 display: flex;
+                background-color: rgb(225, 225, 225);
             }
             #container #myid{
-                width:200px;
+                width: 200px;
                 background-color: rgb(225, 225, 100);
             }
             #container .c1{
-                width:300px;
+                width: 300px;
                 background-color: rgb(100, 225, 100);
             }   
         </style>

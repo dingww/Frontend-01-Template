@@ -229,9 +229,10 @@ void async function(){
     });
     let response = await request.send();
     let dom = parser.parseHTML(response.body);
+
     let viewport = images(800, 600);
-    
+
     render(viewport, dom);
-    
-    viewport.save('viewport.jpg');
+
+    viewport.save('./week07/Toy-browser/viewport.jpg');
 }()

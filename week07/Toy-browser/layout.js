@@ -326,7 +326,6 @@ module.exports.layout = function layout(element){
     })
     
     // console.log('ddd--d', JSON.stringify(items, null, '   '))
-    // console.log(JSON.stringify(elementStyle, null, '   '));
 
 }
 
