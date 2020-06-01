@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS优先级</title>
+    <style>
+        #a #b.bb{
+            background-color: red;
+            border: 1px solid #ccc;
+        }
+        /* .aa #b{
+            color: green
+        } */
+    </style>
+</head>
+<body>
+    <div id="a" class="aa">
+        <div id="b" class="bb">helloello hello hello hello hello hello hello helloello hello hello hello hello hello hello hello hello hello hello hello hello hello hello ello hello hello hello hello hello hello hello</div>
+    </div>
+</body>
+</html>
