@@ -14,6 +14,7 @@
 
 <script>
     // 可用于匹配由标签选择器、id选择器、class选择器和属性选择器组成的复合选择器
+    // 暂时还不支持复杂选择器
     function match(selector, element){
         let selectorList = selector.split(' ');
         let targetSelector = selectorList.pop();
@@ -62,5 +63,9 @@
         return isMatch;
     }
 
-    console.log('result', match("span.cls[title=aa]", document.getElementById('id')))
+    console.log('result', match("div.cls[title=aa]", document.getElementById('id')))
+    console.log('result', match(".cls[title=aa]", document.getElementById('id')))
+    console.log('result', match("#id.cls[title=aa]", document.getElementById('id')))
+    console.log('result', match("div#id[title=aa]", document.getElementById('id')))
+    console.log('result', match("div#id", document.getElementById('id')))
 </script>
