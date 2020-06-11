@@ -5,13 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CSS优先级</title>
     <style>
-        #a #b.bb{
-            background-color: red;
-            border: 1px solid #ccc;
+        #a{
+            width: 100%;
+            height: 300px;
+            background-color:antiquewhite;
         }
-        /* .aa #b{
-            color: green
-        } */
+        #a #b.bb{
+            color:aqua;
+            /* background-color: red; */
+            /* border: 1px solid #ccc; */
+        }
+        
     </style>
 </head>
 <body>
@@ -20,3 +24,109 @@
     </div>
 </body>
 </html>
+<script>
+    let aEle = document.getElementById('a');
+    let bEle = document.getElementById('b');
+    // aEle.addEventListener('mouseover', debounce(fun, 1000));
+    // aEle.addEventListener('mouseenter', debounce(fun.bind(this, 'aqua'), 1000));
+    aEle.addEventListener('mouseover', throttle(fun.bind(this, 'red'), 1000));
+
+    function fun(color){
+        console.log(color)
+        if(bEle.style.color === 'red'){
+            bEle.style.color = 'aqua';
+        }else{
+            bEle.style.color = color;
+        }
+    }
+
+    /** 
+     * @desc 函数防抖
+     * @param fun 函数
+     * @param wait 延迟执行毫秒数
+     * @param isImmediate true 表立即执行，false 表非立即执行
+     **/
+    function debounce(fun, wait, isImmediate) {
+        let timeout;
+        return function(){ 
+            let context = this;
+            let args = arguments;
+            if(timeout) clearTimeout(timeout);
+            if(isImmediate){
+                let callNow = !timeout;
+                timeout = setTimeout(() => {
+                    timeout = null;
+                }, wait); 
+                if(callNow){
+                    fun.apply(context, args);
+                }
+            }else{
+                timeout = setTimeout(() => {
+                    fun.apply(context, args);
+                }, wait)
+            }
+        }
+    }
+
+    /**
+     * @desc 函数节流 n秒内多次触发只执行一次，隔n秒执行一次
+     * @fun 执行函数
+     * @wait 延迟执行毫秒数
+     * @type 1表示时间戳版本 2表示定时器版本 默认定时器版本
+     **/
+    function throttle(fun, wait, type){
+        let previous=0, timeout;
+        return function(){
+            let context = this;
+            let args = arguments;
+            if(type == 1){
+                let now = Date.now();
+                if(now - previous > wait){
+                    fun.apply(context, args);
+                    previous = now;
+                }
+            }else{
+                if(!timeout){
+                    timeout = setTimeout(() => {
+                        fun.apply(context, args);
+                        timeout = null;
+                    }, wait);
+                }
+            }
+        }
+    }
+    
+    // function throttle(fun, wait){
+    //     let timeout;
+    //     return function(){
+    //         let context = this;
+    //         let args = arguments;
+    //         if(!timeout){
+    //             timeout = setTimeout(() => {
+    //                 timeout = null;
+    //                 fun.apply(context, args);
+    //             }, wait);
+    //         }
+           
+    //     }
+    // }
+
+    // /**
+    //  * @desc n秒内连续触发只执行一次，触发不间断函数不执行
+    //  * @fun 执行函数
+    //  * @wait 延迟执行毫秒数
+    //  **/
+    // function throttle(fun, wait){
+    //     let timeout;
+    //     return function(){
+    //         let args = arguments;
+    //         let context = this;
+    //         if(timeout) clearTimeout(timeout);
+    //         timeout = setTimeout(() => {
+    //             timeout = null;
+    //             fun.apply(context, args);
+    //         })
+    //     }
+    // }
+
+</script>
