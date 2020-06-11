@@ -5,17 +5,17 @@
 # 重学CSS
 ## 动画
 ### Animation
-- @keyframes定义
-- animation使用
+- @keyframes定义动画，animation使用动画
 - animation属性：
     - animation-name
     - animation-duration
     - animation-timing-function
     - animation-times
     - animation-delay
-
 - keyframes的定义
-    - 
+    - keyframes：关键帧
+    - from to（两个过程的情况） / 百分比定义动画的过程
+    - 每个过程中元素的状态
 
 ### transition
 - transition属性
@@ -27,12 +27,21 @@
 
 ### bezier曲线
 
-keyframes：关键帧
+- 建议用ease来做位移类动画
+- 退出建议用ease-in
+- 进入建议用ease-out
 
 ## 颜色
 ### CMKY和RGB
 
+- CMKY：印刷四色模式，由Cyan 青色、Magenta 品红、Yellow 黄色，blacK 黑色组成
+- RGB：光的三原色，由红绿蓝组成
+
 ### HSL和HSV
+
+- 色相（H）是色彩的基本属性，就是平常所说的颜色名称，如红色、黄色等；
+- 饱和度（S）是指色彩的纯度，越高色彩越纯，低则逐渐变灰，取0-100%的数值；
+- 明度（V），亮度（L），取0-100%；
 
 ## 形状
 - border
@@ -41,14 +50,17 @@ keyframes：关键帧
 - data uri + svg（能满足画各种形状的需求）
 
 # 重学HTML
-## HTML的定义：XML与SGML
+## HTML的定义
+
+- XML与SGML
+- XML是SGML的子集
 - 必知实体字符
     - quot
     - amp
     - lt
     - gt
-
 - HTML使用多个空格的方法：CSS中加上white-space: pre-wrap或pre;
+- 建议用双引号写html的属性
 
 ### DTD与namespace
 - DTD在SGML的角度定义HTML（在HTML5中不再有效）
@@ -77,7 +89,20 @@ keyframes：关键帧
 - ProcessingInstruction: <?a 1?> (没啥用)
 - CDATA: <![CDATA[]]>
 
+### Browser API
+
+- DOM
+  - DOM Tree
+  - Event
+  - Range
+- CSSOM
+- BOM
+- Web Animation
+- Crypto
+- ...
+
 ### DOM 
+
 - Node
     - Element
     - Document
@@ -109,6 +134,7 @@ keyframes：关键帧
 - Tips：
     - 所有的dom操作都是W3C的标准
     - HTML多namespace共存，包括：HTML namespace、SVG namespace 和 MathML namespace
+    - addEventListener第二个参数可以传一个对象，{handleEvent: function}
 
 ## 作业：用脑图的形式总结CSS的属性分类
 
