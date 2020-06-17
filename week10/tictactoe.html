@@ -107,7 +107,7 @@
                 return true;
             }
         }}
-        {for(let i = 0; i < 3; i++){
+        {
             let win = true;
             for(let j = 0; j < 3; j++){
                 if(pattern[j][j] !== color){
@@ -118,8 +118,8 @@
             if(win){
                 return true;
             }
-        }}
-        {for(let i = 0; i < 3; i++){
+        }
+        {
             let win = true;
             for(let j = 0; j < 3; j++){
                 if(pattern[j][2-j] !== color){
@@ -130,7 +130,7 @@
             if(win){
                 return true;
             }
-        }}
+        }
     }
 
     function clone(pattern){

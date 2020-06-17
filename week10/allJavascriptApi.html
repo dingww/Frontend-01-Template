@@ -7,12 +7,24 @@
         return names.filter(e => !set.has(e));
     }
 
+    // ECMA 262
     {
         let js = new Set();
         let Objects = ["globalThis", "console","BigInt","BigInt64Array", "BigUint64Array", "Infinity", "NaN", "undefined", "eval", "isFinite", "isNaN", "parseFloat", "parseInt", "decodeURI", "decodeURIComponent", "encodeURI", "encodeURIComponent", "Array", "Date", "RegExp", "Promise", "Proxy", "Map", "WeakMap", "Set", "WeakSet", "Function", "Boolean", "String", "Number", "Symbol", "Object", "Error", "EvalError", "RangeError", "ReferenceError", "SyntaxError", "TypeError", "URIError", "ArrayBuffer", "SharedArrayBuffer", "DataView", "Float32Array", "Float64Array", "Int8Array", "Int16Array", "Int32Array", "Uint8Array", "Uint16Array", "Uint32Array", "Uint8ClampedArray", "Atomics", "JSON", "Math", "Reflect", "escape", "unescape"];
-        
+        Objects.forEach(o => js.add(o));
+        names.filter(v => !js.has(v));
+
     }
 
-    
+    names.filter(v => {
+        try{
+            return !(window[v].prototype instanceof Node)
+        }catch(err){
+            return true;
+        }
+    }).filter(v => v !== 'Node')
+
+    names = names.filter(v => !v.match(/^on/));
+    names = names.filter(v => !v.match(/^webkit/));
 
 </script>
