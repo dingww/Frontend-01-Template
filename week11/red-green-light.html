@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>红绿灯</title>
+    <style>
+        div{
+            width: 50px;
+            height: 50px;
+            margin:10px;
+            border-radius: 100%;
+            background-color: #666;
+            display: inline-block;
+        }
+        .red.light{
+            background-color: red;
+        }
+        .yellow.light{
+            background-color: yellow;
+        }
+        .green.light{
+            background-color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="red"></div>
+    <div class="yellow"></div>
+    <div class="green"></div>
+    <button id="next">click</button>
+</body>
+</html>
+<script>
+    function green() {
+        let lights = document.getElementsByTagName('div');
+        for(let i = 0; i < 3; i++){
+            lights[i].classList.remove('light');
+        }
+        document.getElementsByClassName('green')[0].classList.add('light');
+    }
+    function red() {
+        let lights = document.getElementsByTagName('div');
+        for(let i = 0; i < 3; i++){
+            lights[i].classList.remove('light');
+        }
+        document.getElementsByClassName('red')[0].classList.add('light');
+    }
+    function yellow() {
+        let lights = document.getElementsByTagName('div');
+        for(let i = 0; i < 3; i++){
+            lights[i].classList.remove('light');
+        }
+        document.getElementsByClassName('yellow')[0].classList.add('light');
+    }
+
+    // // 基于setTimeout
+    // function go(){
+    //     green();
+    //     setTimeout(function(){
+    //         yellow();
+    //         setTimeout(function(){
+    //             red();
+    //             setTimeout(function(){
+    //                 go();
+    //             },500)
+    //         }, 200)
+    //     }, 1000);
+    // }
+    // go();
+
+    // --------------分割线--------------
+
+    function sleep(t){
+        return new Promise((resolve, reject) => {
+            setTimeout(resolve, t)
+        });
+    }
+
+    // // Promise
+    // function go(){
+    //     green();
+    //     sleep(1000).then(()=> {
+    //         yellow();
+    //         return sleep(200);
+    //     }).then(() => {
+    //         red();
+    //         return sleep(500);
+    //     }).then(go);
+    // }
+    // go();
+
+    // // async
+    // async function go(){
+    //     while(true){
+    //         green();
+    //         await sleep(1000);
+    //         yellow();
+    //         await sleep(200);
+    //         red();
+    //         await sleep(500);
+    //     }
+    // }
+    // go();
+
+    // --------------分割线--------------
+
+    // // 手动控制
+    // function happen(element, eventName){
+    //     return new Promise((resolve, reject) => {
+    //         element.addEventListener(eventName, resolve, {once: true})
+    //         // element.addEventListener(eventName, ()=>{resolve(); element.removeEventListener(eventName, resolve)})
+    //     })
+    // }
+    //  async function go(){
+    //     while(true){
+    //         green();
+    //         await happen(document.getElementById("next"), 'click');
+    //         yellow();
+    //         await happen(document.getElementById("next"), 'click');
+    //         red();
+    //         await happen(document.getElementById("next"), 'click');
+    //     }
+    // }
+    // go();
+
+    // --------------分割线--------------
+    // 基于 generator
+    function* go(){
+        while(true){
+            green();
+            yield sleep(1000);
+            yellow();
+            yield sleep(200);
+            red();
+            yield sleep(500);
+        }
+    }
+
+    function run(iterator){
+        let {value, done} = iterator.next();
+        if(done){
+            return;
+        }
+        if(value instanceof Promise){
+            value.then(() => {
+                run(iterator);
+            })
+        }
+    }
+    function co(generator){
+        return function(){
+            return run(generator())
+        }
+    }
+
+    go = co(go)
+    
+</script>
