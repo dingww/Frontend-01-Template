@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Find Path</title>
     <style>
         #container{
             width: 701px;
@@ -29,16 +29,37 @@
             border-radius: 4px;
             border: none;
             margin-top: 10px;
+            margin-right: 10px;
+            outline-color :#f99;
+        }
+        input{
+            width: 50px;
+            height: 30px;
+            border: 1px solid #faa;
+            border-radius: 4px;
+            margin: 2px 5px;
+            outline-color :#f99;
+            color: #f66;
         }
     </style>
 </head>
 <body>
     <div id="container"></div>
-    <button id="btn" onclick="localStorage.map = JSON.stringify(map)">save</button>
+    <button id="btn" onclick="localStorage.map = JSON.stringify(map)">Save Pic</button>
+    <label>起点：</label><input type="text" onchange="changeStart(event, 0)"/><input type="text" onchange="changeStart(event, 1)"/>
+    <label>终点：</label><input type="text" onchange="changeEnd(event, 0)"/><input type="text" onchange="changeEnd(event, 1)"/>
+    <button id="btn" onclick="findPath(map, start, end)">Find Path</button>
 </body>
 </html>
 <script>
-
+    let start = []
+    let end = [];
+    function changeStart(e, n){
+        start[n] = Number(e.target.value);
+    }
+    function changeEnd(e, n){
+        end[n] = Number(e.target.value);
+    }
     // class Sorted{
     //     constructor(data, compare){
     //         this.data = data;
@@ -191,7 +212,7 @@
             }
             map[100 * y + x] = pre;
             container.children[y * 100 + x].style.backgroundColor = "#ffc";
-            await sleep(5);
+            await sleep(1);
             collection.insert([x, y]); 
         }
         while(collection.length){
@@ -219,5 +240,6 @@
         }
         return null;
     }
+
 
 </script>
