@@ -15,7 +15,7 @@
     //     return false;
     // }
 
-    // KMP就是利用pattern本身的重复子串，在匹配失败时不用从头开始来提高效率
+    // KMP就是利用pattern本身的重复子串来提高效率
     function find(source, pattern){
         // table用来记录每次与pattern失配后pattern指针回溯的位置
         let table = new Array(pattern.length).fill(0);
@@ -37,9 +37,9 @@
             table[j] = k;
         }
         // console.log(table)
+
         let j = 0;
         for(let i = 0; i < source.length; i++){
-            let matched = true;
             if(source[i] === pattern[j]){
                 j++;
             }else{
@@ -59,5 +59,4 @@
         return false;
     }
 
-    
 </script>
