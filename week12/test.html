@@ -1,0 +1,24 @@
+<script>
+    let result = []; 
+    function getArr(arr){  
+        arr.map((v, i)=> {
+            if(v instanceof Array){
+                getArr(v);
+            }else{
+                result.push(v)
+            }
+        });
+    }
+
+    let arr = [1,2,[3,[4,5]],6,7];
+    console.log(getArr(arr))
+
+    // 方法一
+    // let newArr = arr.toString().replace(/[\[\]]/g, '').split(',').map(v => Number(v);
+    
+    // console.log())
+    // 方法二
+    // let newArr = arr.flat(Infinity);
+
+    // console.log(newArr)
+</script>
