@@ -19,17 +19,7 @@ class Carousel{
         this.children.push(child);
     }
 
-    render(){
-        let children = this.data.map(url => {
-            let element = <img src={url}/>;
-            element.addEventListener("dragstart", event => event.preventDefault());
-            return element;
-        });
-        let root = <div class="carousel">
-            {
-                children
-            }
-        </div>
+    loop(children){
         let linear = t => t;
         let ease = cubicBezier(.25,.1,.25,1);
 
@@ -79,7 +69,9 @@ class Carousel{
             setTimeout(nextPic, 2000);
         } 
         setTimeout(nextPic, 2000);
-         
+    }
+
+    drag(root, children){
         root.addEventListener('mousedown', (event) => {
             let startX = event.clientX;
             let lastPosition = (position - 1 + this.data.length) % this.data.length;
@@ -144,6 +136,22 @@ class Carousel{
             document.addEventListener('mousemove', move);
             document.addEventListener('mouseup', up)
         });
+    }
+
+    render(){
+        let children = this.data.map(url => {
+            let element = <img src={url}/>;
+            element.addEventListener("dragstart", event => event.preventDefault());
+            return element;
+        });
+        let root = <div class="carousel">
+            {
+                children
+            }
+        </div>
+        
+        this.loop(children);
+        this.drag(root, children);
         return root;
     }
 
