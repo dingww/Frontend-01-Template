@@ -19,10 +19,10 @@ class Carousel{
         this.children.push(child);
     }
 
-    loop(children){
+    // 使用动画时间线做轮播动画
+    timelineLoop(children){
         let linear = t => t;
         let ease = cubicBezier(.25,.1,.25,1);
-
         let position = 0;
         let nextPic = () => {
             let nextPosition = (position + 1) % this.data.length;
@@ -32,10 +32,6 @@ class Carousel{
             current.style.transition = 'none';
             next.style.transition = 'none';
 
-            // current.style.transform = `translateX(${- 100 * position}%)`;
-            // next.style.transform = `translateX(${100 -100 * nextPosition}%)`;
-
-
             // 引入动画时间线
             let tl = new Timeline();
             // 添加动画
@@ -43,14 +39,32 @@ class Carousel{
             tl.add(new Animation(next.style, 'transform', v => `translateX(${v}%)`, 100 - 100 * nextPosition, - 100 * nextPosition, 500, 0, linear));
             
             tl.start();
+            position = nextPosition;
+            
+            setTimeout(nextPic, 2000);
+        } 
+        setTimeout(nextPic, 2000);
+    }
+
+    loop(children){
+        let linear = t => t;
+        let ease = cubicBezier(.25,.1,.25,1);
+        let position = 0;
+        let nextPic = () => {
+            let nextPosition = (position + 1) % this.data.length;
+            let current = children[position];
+            let next = children[nextPosition];
+
+            current.style.transition = 'none';
+            next.style.transition = 'none';
+
+            current.style.transform = `translateX(${- 100 * position}%)`;
+            next.style.transform = `translateX(${100 -100 * nextPosition}%)`;
             setTimeout(() => { 
                 current.style.transition = ''; // 表示用css的transition
                 next.style.transition = '';
-                tl.add(new Animation(current.style, 'transform', v => `translateX(${v}%)`,  100 - 100 * position, - 100 * position, 0, 0, linear));
-                tl.add(new Animation(next.style, 'transform', v => `translateX(${v}%)`,  200 - 100 * nextPosition, 100 - 100 * nextPosition, 0, 0, linear));
-                tl.start();
-                // current.style.transform = `translateX(${-100 - 100 * position}%)`;
-                // next.style.transform = `translateX(${-100 * nextPosition}%)`;
+                current.style.transform = `translateX(${-100 - 100 * position}%)`;
+                next.style.transform = `translateX(${-100 * nextPosition}%)`;
                 position = nextPosition;
             }, 16);
 
@@ -149,8 +163,8 @@ class Carousel{
                 children
             }
         </div>
-        
-        this.loop(children);
+        // this.loop(children);
+        this.timelineLoop(children);
         this.drag(root, children);
         return root;
     }
