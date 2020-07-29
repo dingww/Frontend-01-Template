@@ -1,23 +1,26 @@
 export class Timeline{
     constructor(){
         this.animations = new Set();
+        this.finishedAnimations = new Set();
+        this.addTimes = new Map();
         this.requestID = null;
         this.state = 'inited';
         this.tick = () => {
             let t = Date.now() - this.startTime;
             for(let animation of this.animations){
 
-                let {object, property, template, duration, start, end, timingFunction, delay, startTime, addTime} = animation;
-                
+                let {object, property, template, duration, start, end, timingFunction, delay} = animation;
+                let addTime = this.addTimes.get(animation)
                 if(t < delay + addTime){
                     continue;
                 }
 
-                let progression = timingFunction((t - delay - startTime) / duration);
-
-                if(t > duration + delay + startTime){
+                let progression = timingFunction((t - delay - addTime) / duration);
+                // console.log('progression', progression)
+                if(t > duration + delay + addTime){
                     progression = 1;
                     this.animations.delete(animation);
+                    this.finishedAnimations.add(animation);
                 }
                 let value = animation.valueFromProgression(progression);
 
@@ -30,7 +33,7 @@ export class Timeline{
             }
         };
     }
-
+    //暂停
     pause(){
         if(this.state !== 'playing'){
             return;
@@ -43,6 +46,7 @@ export class Timeline{
         }
     }
 
+    // pause后的重新开始
     resume(){
         if(this.state !== 'paused'){
             return;
@@ -52,6 +56,7 @@ export class Timeline{
         this.tick();
     }
 
+    // 动画开始
     start(){
         if(this.state !== 'inited'){
             return;
@@ -61,32 +66,48 @@ export class Timeline{
         this.tick();
     }
 
-    // restart(){
-    //     if(this.state === 'playing'){
-    //         this.pause();
-    //     }
-    //     for(let animation of this.finishedAnimations){
-    //         this.animations.add(animation);
-    //     }
-    //     this.animations = new Set();
-    //     this.requestID = null;
-    //     this.state = 'playing';
-    //     this.startTime = Date.now();
-    //     this.pauseTime = null;
-    //     this.tick();
-    // }
+    // 重置动画
+    reset(){
+        if(this.state === 'playing'){
+            this.pause();
+        }
+        this.animations = new Set();
+        this.addTimes = new Map();
+        this.finishedAnimations = new Set();
+        this.requestID = null;
+        this.state = 'inited';
+        this.startTime = Date.now();
+        this.pauseTime = null;
+        this.tick();
+    }
 
-    add(animation, addTime){
+    // 从头开始重播一遍动画
+    restart(){
+        if(this.state === 'playing'){
+            this.pause();
+        }
+        for(let animation of this.finishedAnimations){
+            this.animations.add(animation);
+        }
+        this.finishedAnimations = new Set();
+        this.requestID = null;
+        this.state = 'playing';
+        this.startTime = Date.now();
+        this.pauseTime = null;
+        this.tick();
+    }
+
+    // 将动画加入时间线
+    add(animation, addTime){ 
         this.animations.add(animation);
         if(this.state === 'playing' && this.requestID == null){
-            this.requestID = requestAnimationFrame(this.tick);
-        }
+            this.tick();
+        }     
         if(this.state === 'playing'){
-            animation.startTime = addTime !== void 0 ? addTime : Date.now() - this.startTime;
+            this.addTimes.set(animation, addTime !== void 0 ? addTime : Date.now() - this.startTime);
         }else{
-            animation.startTime = addTime !== void 0 ? addTime : 0;
+            this.addTimes.set(animation, addTime !== void 0 ? addTime : 0);
         }
-       
     }
 }
 
@@ -108,6 +129,7 @@ export class Animation{
      }
 }
 
+// 颜色变化的动画
 export class ColorAnimation{
     constructor(object, property, start, end, duration, delay, timingFunction, template){
         this.object = object;
