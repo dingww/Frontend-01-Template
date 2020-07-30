@@ -38,7 +38,7 @@ export function enableGesture(element){
 
     element.addEventListener("touchend", event => {
         for(let touch of event.changedTouches) {
-            move(touch, contexts[touch.identifier]);
+            end(touch, contexts[touch.identifier]);
             delete contexts[touch.identifier];
         }
     })
@@ -57,10 +57,12 @@ export function enableGesture(element){
 
     let start = (point, context) => {
         element.dispatchEvent(new CustomEvent('start', {
-            startX:point.startX,
-            startY:point.startY,
-            clientX: point.clientX,
-            clientY: point.clientY,
+            detail: {
+                startX: point.startX,
+                startY: point.startY,
+                clientX: point.clientX,
+                clientY: point.clientY,
+            }
         }));
         context.startX = point.clientX;
         context.startY = point.clientY;
@@ -90,11 +92,13 @@ export function enableGesture(element){
             context.isTap = false;
             context.isPan = true;
             context.isPress = false;
-            element.dispatchEvent(new CustomEvent('panstart', { 
-                startX: context.startX,
-                startY: context.startY,
-                clientX: point.clientX,
-                clientY: point.clientY,
+            element.dispatchEvent(new CustomEvent('panstart', {
+                detail: {
+                    startX: context.startX,
+                    startY: context.startY,
+                    clientX: point.clientX,
+                    clientY: point.clientY,
+                }
             }));
         }
 
@@ -105,11 +109,14 @@ export function enableGesture(element){
                 t: Date.now() 
             });
             context.moves = context.moves.filter(record => Date.now() - record.t < 300);
+            // console.log('pan------')
             element.dispatchEvent(new CustomEvent('pan', {
-                startX: context.startX,
-                startY: context.startY,
-                clientX: point.clientX,
-                clientY: point.clientY,
+                detail: {
+                    startX: context.startX,
+                    startY: context.startY,
+                    clientX: point.clientX,
+                    clientY: point.clientY,
+                }
             }));
         }
     }
@@ -120,23 +127,27 @@ export function enableGesture(element){
             let record = context.moves[0]
             let speed = Math.sqrt((record.dx - dx) ** 2 + (record.dy - dy) ** 2) / (Date.now() - record.t)
             let isFlick = speed > 2.5;
-            if(speed > 2.5){
+            if(isFlick){
                 element.dispatchEvent(new CustomEvent('flick', {
+                    detail: {
+                        startX: context.startX,
+                        startY: context.startY,
+                        clientX: point.clientX,
+                        clientY: point.clientY,
+                        speed: speed,
+                    }
+                }));
+            }
+            // console.log('moves', context.moves)
+            element.dispatchEvent(new CustomEvent('panend', {
+                detail: {
                     startX: context.startX,
                     startY: context.startY,
                     clientX: point.clientX,
                     clientY: point.clientY,
                     speed: speed,
-                }));
-            }
-            // console.log('moves', context.moves)
-            context.isPress = false;element.dispatchEvent(new CustomEvent('panend', {
-                startX: context.startX,
-                startY: context.startY,
-                clientX: point.clientX,
-                clientY: point.clientY,
-                speed: speed,
-                isFlick: isFlick,
+                    isFlick: isFlick,
+                }
             }));
         }
         if(context.isTap){

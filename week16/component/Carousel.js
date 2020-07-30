@@ -113,16 +113,17 @@ export default class Carousel{
                 clearTimeout(nextPicStopHandler);
 
                 let currentElement = children[currentPosition];
-                console.log('currentPosition', currentPosition)
+                // console.log('currentPosition', currentPosition)
                 let currentTransformValue = Number(currentElement.style.transform.match(/translateX\(([\s\S]+)px\)/)[1]);
                 offset = currentTransformValue + 500 * currentPosition;
             }
             let onPan = event => {
-                let currentElement = children[currentPosition];
                 let lastElement = children[lastPosition];
+                let currentElement = children[currentPosition];
                 let nextElement = children[nextPosition];
 
-                let dx = event.clientX - event.startX;
+                let dx = event.detail.clientX - event.detail.startX;
+
                 let lastTransformValue = - 500 - 500 * lastPosition + offset + dx;
                 let currentTransformValue = - 500 * currentPosition + offset + dx;
                 let nextTransformValue = 500 - 500 * nextPosition + offset + dx;
@@ -130,12 +131,12 @@ export default class Carousel{
                 currentElement.style.transform = `translateX(${currentTransformValue}px)`;
                 lastElement.style.transform = `translateX(${lastTransformValue}px)`;
                 nextElement.style.transform = `translateX(${nextTransformValue}px)`;
-               
+            //    console.log(currentPosition, offset, dx, currentTransformValue)
             }
 
             let onPanend = event => {
                 let direction = 0;
-                let dx = event.clientX - event.startX;
+                let dx = event.detail.clientX - event.detail.startX;
 
                 if(dx + offset > 250){
                     direction = 1;
@@ -157,10 +158,7 @@ export default class Carousel{
                 timeline.add(currentAnimation);
                 timeline.add(nextAnimation);
 
-                console.log('1', position)
-
                 position = (position - direction + this.data.length) % this.data.length;
-                console.log('2', position)
                 nextPicStopHandler = setTimeout(nextPic, 2000);
             }
 
@@ -171,7 +169,6 @@ export default class Carousel{
         });
         
         let nextPic = () => {
-            console.log('nextPic', position)
             let nextPosition = (position + 1) % this.data.length;
             let current = children[position];
             let next = children[nextPosition];
@@ -194,7 +191,7 @@ export default class Carousel{
         </div>
         
         // this.timelineLoop(children);
-        this.drag(root, children);
+        // this.drag(root, children);
         return root;
     }
 
