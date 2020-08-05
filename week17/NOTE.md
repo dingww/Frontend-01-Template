@@ -27,8 +27,12 @@
     - git
     - svn
     
-用闭包可实现递归
+## 用yeoman做一个generator
 
+
+## 用闭包实现递归
+
+```javascript
 (g => 
     (f => f(f))(
         self => g((...args) => self(self).apply(this, args))
@@ -39,7 +43,7 @@
     }
 )(100)
 
-等价于：
+// 等价于：
 
 var y = g => (f => f(f))(self => g((...args) => self(self).apply(this, args)));
 
@@ -47,5 +51,7 @@ var f = y(self => n => n > 0 ? self(n-1) + n : 0);
 
 f(100);
 
-## 用yeoman做一个generator
+```
+
+
 
