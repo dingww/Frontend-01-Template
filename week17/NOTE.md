@@ -121,9 +121,8 @@ var f = y(self => n => n > 0 ? self(n-1) + n : 0);
 
 f(100);
 
-// 总结：有了闭包才有y-combinator，有了y-combinator才有递归，有了递归，js才是图灵完备的
-
 ```
 
+总结：有了闭包才有y-combinator，有了y-combinator才有递归，有了递归，js才是图灵完备的
 
 
