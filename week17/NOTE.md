@@ -31,15 +31,15 @@
 
 ### yeoman的使用
 
-yeoman是生成generator的generator工具，接下来我们参考[官网教程](https://yeoman.io/authoring/index.html)，用yeoman创建一个generator来学习generator的使用。
+yeoman是生成generator（类似于生成create-react-app、vue-cli之类）的generator工具，接下来我们参考[yeoman官网](https://yeoman.io/authoring/index.html)，用yeoman创建一个generator来学习yeoman的使用。
 
-- 全局安装yeoman
+- 首先全局安装yeoman：
 
 ```
 yarn global add yo
 ```
 
-- 创建一个generator项目目录，目录名称为generator-name格式，name为项目名，我的项目名是della，所以此处目录名为generator-della
+- 创建一个generator项目目录，目录名称为generator-name格式，name为项目名，我的项目名是della，所以此处目录名为generator-della。
 
 - `yarn init`初始化generator-della，全部使用默认配置。进入generator-della项目目录，安装yeoman-generator，此处yeoman-generator不需要全局安装，也不需要save。
 
@@ -61,7 +61,7 @@ yarn add yeoman-generator
             └───index.js
 ```
 
-- 在当前目录下执行`npm link`，将generator-della这个项目软连接到本地node_modules，就相当于在全局安装了generator-della。
+- 在当前目录下执行`npm link`，将generator-della这个项目软链接到本地node_modules里面，就相当于在全局安装了generator-della包，可供全局使用。
 
 - 在app下创建一个template/index.html模版文件，模版内容为：
 
@@ -93,7 +93,7 @@ module.exports = class extends Generator {
 };
 ```
 
-- 接下来在generator-della项目外面创建一个della-app目录，然后`cd della-app`到该目录下，执行`yo della（项目名）`，就可以在della-app这个项目中创建一个public/index.html文件。执行`yo della`其实就是执行generator-della项目的app/index.js里面的内容，执行的方式是从上往下的顺次执行。
+- 接下来在generator-della项目外面创建一个della-app目录，然后`cd della-app`到该目录下，执行`yo della（项目名）`，就可以在della-app这个项目中创建一个public/index.html文件。执行`yo della`其实就是执行generator-della项目的app/index.js里面的内容，执行的方式是从上往下顺次执行。到此，就已经学会了yeoman的基本用法。
 
 ### yeoman的底层实现--命令行操作
 具体代码见console-toolkit/index.js
