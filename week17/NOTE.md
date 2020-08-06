@@ -27,10 +27,80 @@
     - git
     - svn
     
-## 用yeoman做一个generator
+## yeoman
 
+### yeoman的使用
 
-## 用闭包实现递归
+yeoman是生成generator的generator工具，接下来我们参考[官网教程](https://yeoman.io/authoring/index.html)，用yeoman创建一个generator来学习generator的使用。
+
+- 全局安装yeoman
+
+```
+yarn global add yo
+```
+
+- 创建一个generator项目目录，目录名称为generator-name格式，name为项目名，我的项目名是della，所以此处目录名为generator-della
+
+- `yarn init`初始化generator项目
+
+- 进入generator项目目录，安装yeoman-generator，此处yeoman-generator不需要全局安装，也不需要save。
+
+```
+cd generator-della
+yarn add yeoman-generator
+```
+
+- 然后在当前目录下创建一个generators文件夹，再在generators里面创建一个app目录和一个router目录，分别为这两个目录添加index.js文件。generator-della目录如下：
+
+```
+├───generator-della
+    ├───node_modules
+    ├───package.json
+    └───generators/
+        ├───app/
+        │   └───index.js
+        └───router/
+            └───index.js
+```
+
+- 在当前目录下执行`npm link`，将generator-della这个项目软连接到本地node_modules，就相当于在全局安装了generator-della。
+
+- 在app下创建一个template/index.html模版文件，模版内容为：
+
+```
+<html>
+  <head>
+    <title><%= title %></title>
+  </head>
+</html>
+```
+
+- 在app/index.js中添加以下内容：
+
+```
+var Generator = require('yeoman-generator');
+
+module.exports = class extends Generator {
+    constructor(args, opts) {
+        // Calling the super constructor is important so our generator is correctly set up
+        super(args, opts);
+    }
+    writing() {
+        this.fs.copyTpl(
+            this.templatePath('index.html'),
+            this.destinationPath('public/index.html'),
+            { title: this.answers.title }
+        );
+    }
+};
+```
+
+- 接下来在generator-della项目外面创建一个della-app目录，然后`cd della-app`到该目录下，执行`yo della（项目名）`，就可以在della-app这个项目中创建一个public/index.html文件。执行`yo della`其实就是执行generator-della项目的app/index.js里面的内容，执行的方式是从上往下的顺次执行。
+
+### yeoman的底层实现--命令行操作
+具体代码见console-toolkit/index.js
+
+## 用闭包可代替递归
 
 ```javascript
 (g => 
@@ -45,7 +115,7 @@
 
 // 等价于：
 
-var y = g => (f => f(f))(self => g((...args) => self(self).apply(this, args)));
+var y = g => (f => f(f))(self => g((...args) => self(self).apply(this, args))); // y-combinator
 
 var f = y(self => n => n > 0 ? self(n-1) + n : 0);
 
