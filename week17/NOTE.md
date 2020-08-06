@@ -98,7 +98,9 @@ module.exports = class extends Generator {
 ### yeoman的底层实现--命令行操作
 具体代码见console-toolkit/index.js
 
-## 用闭包可代替递归
+## js闭包存在的意义
+
+闭包是js编程的基石，如果没有闭包，就没有了递归，js就不再是图灵完备的。下面使用闭包来实现一个递归：
 
 ```javascript
 (g => 
@@ -118,6 +120,8 @@ var y = g => (f => f(f))(self => g((...args) => self(self).apply(this, args))); 
 var f = y(self => n => n > 0 ? self(n-1) + n : 0);
 
 f(100);
+
+// 总结：有了闭包才有y-combinator，有了y-combinator才有递归，有了递归，js才是图灵完备的
 
 ```
 
