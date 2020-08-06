@@ -41,9 +41,7 @@ yarn global add yo
 
 - 创建一个generator项目目录，目录名称为generator-name格式，name为项目名，我的项目名是della，所以此处目录名为generator-della
 
-- `yarn init`初始化generator项目
-
-- 进入generator项目目录，安装yeoman-generator，此处yeoman-generator不需要全局安装，也不需要save。
+- `yarn init`初始化generator-della，全部使用默认配置。进入generator-della项目目录，安装yeoman-generator，此处yeoman-generator不需要全局安装，也不需要save。
 
 ```
 cd generator-della
